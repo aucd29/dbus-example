@@ -1,18 +1,37 @@
-cc=gcc
-CFLAGS=-g -c -Wall -m64 -Ofast -flto -march=native -funroll-loops -DLINUX -I/usr/include/dbus-1.0 -I/usr/lib/dbus-1.0/include
-#CFLAGS=-g -c -Wall -mthumb -O3 -march=armv7-a -mcpu=cortex-a9 -mtune=cortex-a9 -mfpu=neon -mvectorize-with-neon-quad -mfloat-abi=hard -DLINUX
-LDFLAGS=-ldbus-1
-SRCS=dbus-example.c
-OBJS=$(SRCS:.c=.o)
+#
+# COPYRIGHT 2014 Burke Choi All Right Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# istributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+
+# DEFINE
+CC=gcc 
+INC=-I/usr/local/include/dbus-1.0 -I/usr/local/lib/dbus-1.0/include -L/usr/local/lib
+LIBS=-ldbus-1
+CFLAGS=-g -Wall -m64 -Ofast -flto -march=native -funroll-loops -DLINUX $(INC)
+
+# BIN NAME
 TARGET=dbus-example
 
-all: $(SRCS) $(TARGET)
+# SOURCES
+SRCS=dbus-example.c
+
+# OBJECTS
+OBJS=$(SRCS:.c=.o)
+ALL: $(TARGET)
 
 $(TARGET): $(OBJS)
-	$(CC) $(LDFLAGS) $(OBJS) -o $@
-
-.c.o:
-	$(CC) $(CFLAGS) $< -o $@
+	$(CC) -o $@ $(OBJS) $(LIBS)
 
 clean:
-	rm -fr $(OBJS) $(TARGET)
+	rm -rf $(OBJS) $(TARGET)
